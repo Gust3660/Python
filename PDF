@@ -1,0 +1,39 @@
+import PyPDF2
+
+def combinar_pdfs(lista_pdfs, salida):
+    """Combina múltiples archivos PDF en uno solo."""
+    combinador = PyPDF2.PdfMerger()
+    for pdf in lista_pdfs:
+        combinador.append(pdf)
+    combinador.write(salida)
+    combinador.close()
+    print(f"Archivo combinado guardado como {salida}")
+
+def extraer_texto(pdf, pagina):
+    """Extrae texto de una página específica de un archivo PDF."""
+    with open(pdf, 'rb') as archivo:
+        lector = PyPDF2.PdfReader(archivo)
+        texto = lector.pages[pagina].extract_text()
+        return texto
+
+def dividir_pdf(pdf, inicio, fin, salida):
+    """Divide un archivo PDF seleccionando un rango de páginas."""
+    with open(pdf, 'rb') as archivo:
+        lector = PyPDF2.PdfReader(archivo)
+        escritor = PyPDF2.PdfWriter()
+        for num_pagina in range(inicio, fin):
+            escritor.add_page(lector.pages[num_pagina])
+        with open(salida, 'wb') as pdf_salida:
+            escritor.write(pdf_salida)
+        print(f"Páginas {inicio + 1} a {fin} guardadas en {salida}")
+
+# Ejemplo de uso:
+# Combinar PDF
+# combinar_pdfs(["archivo1.pdf", "archivo2.pdf"], "resultado.pdf")
+
+# Extraer texto
+# texto = extraer_texto("archivo1.pdf", 0)
+# print(texto)
+
+# Dividir PDF
+# dividir_pdf("archivo1.pdf", 0, 2, "salida.pdf")
