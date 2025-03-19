@@ -1,0 +1,85 @@
+import pygame
+import math
+import random
+
+# Inicialización de pygame
+pygame.init()
+
+# Configuración de pantalla
+ANCHO, ALTO = 800, 600
+pantalla = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("Bubble Shooter")
+
+# Colores
+COLORES = [
+    (255, 0, 0), (0, 255, 0), (0, 0, 255), 
+    (255, 255, 0), (255, 0, 255), (0, 255, 255)
+]
+NEGRO = (0, 0, 0)
+
+# Clase Burbuja
+class Burbuja:
+    def __init__(self, x, y, color):
+        self.x = x
+        self.y = y
+        self.color = color
+        self.radio = 20
+    
+    def dibujar(self, pantalla):
+        pygame.draw.circle(pantalla, self.color, (int(self.x), int(self.y)), self.radio)
+    
+    def mover(self, dx, dy):
+        self.x += dx
+        self.y += dy
+
+# Función principal
+def juego():
+    reloj = pygame.time.Clock()
+    corriendo = True
+
+    burbujas = [Burbuja(random.randint(100, ANCHO - 100), random.randint(50, 200), random.choice(COLORES)) for _ in range(20)]
+    disparo = None
+    angulo = -math.pi / 2
+    velocidad = 10
+
+    while corriendo:
+        pantalla.fill(NEGRO)
+
+        # Eventos
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                corriendo = False
+            if evento.type == pygame.KEYDOWN and evento.key == pygame.K_SPACE:
+                if disparo is None:
+                    disparo = Burbuja(ANCHO // 2, ALTO - 50, random.choice(COLORES))
+        
+        # Dibujar burbujas
+        for burbuja in burbujas:
+            burbuja.dibujar(pantalla)
+
+        # Disparar burbuja
+        if disparo:
+            disparo.mover(velocidad * math.cos(angulo), velocidad * math.sin(angulo))
+            disparo.dibujar(pantalla)
+
+            # Verificar colisión
+            for burbuja in burbujas:
+                distancia = math.sqrt((burbuja.x - disparo.x)**2 + (burbuja.y - disparo.y)**2)
+                if distancia < burbuja.radio + disparo.radio:
+                    burbujas.remove(burbuja)
+                    disparo = None
+                    break
+            if disparo and (disparo.x < 0 or disparo.x > ANCHO or disparo.y < 0):
+                disparo = None
+
+        # Dibujar lanzador
+        pygame.draw.line(pantalla, (255, 255, 255), (ANCHO // 2, ALTO - 50), 
+                         (ANCHO // 2 + 50 * math.cos(angulo), ALTO - 50 + 50 * math.sin(angulo)), 5)
+
+        # Actualizar pantalla
+        pygame.display.flip()
+        reloj.tick(30)
+
+    pygame.quit()
+
+juego()
