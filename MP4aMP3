@@ -1,0 +1,18 @@
+from moviepy.editor import VideoFileClip
+
+# Ruta del archivo MP4
+ruta_mp4 = "video.mp4"
+
+# Ruta para guardar el archivo MP3
+ruta_mp3 = "audio.mp3"
+
+# Cargar el video
+video = VideoFileClip(ruta_mp4)
+
+# Extraer el audio y guardarlo como MP3
+video.audio.write_audiofile(ruta_mp3)
+
+# Cerrar recursos
+video.close()
+
+print("¡Conversión completada!")
