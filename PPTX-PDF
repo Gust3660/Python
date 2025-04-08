@@ -1,0 +1,21 @@
+import comtypes.client
+
+def convertir_ppt_a_pdf(input_file, output_file):
+    try:
+        # Crear una instancia de la aplicación PowerPoint
+        powerpoint = comtypes.client.CreateObject("PowerPoint.Application")
+        # Abrir la presentación
+        presentación = powerpoint.Presentations.Open(input_file, WithWindow=False)
+        # Exportar a PDF
+        presentación.SaveAs(output_file, 32)  # 32 es el formato para PDF
+        presentación.Close()
+        powerpoint.Quit()
+        print("Conversión completada con éxito.")
+    except Exception as e:
+        print(f"Ocurrió un error: {e}")
+
+# Ruta del archivo PowerPoint de entrada y del archivo PDF de salida
+archivo_ppt = r"C:\ruta\a\archivo.pptx"
+archivo_pdf = r"C:\ruta\a\archivo.pdf"
+
+convertir_ppt_a_pdf(archivo_ppt, archivo_pdf)
