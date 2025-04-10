@@ -1,0 +1,14 @@
+from pydub import AudioSegment
+
+def convertir_wav_a_mp3(archivo_wav, archivo_mp3):
+    # Cargar archivo WAV
+    sonido = AudioSegment.from_wav(archivo_wav)
+    
+    # Exportar como MP3
+    sonido.export(archivo_mp3, format="mp3")
+    print(f"Conversión completada: {archivo_mp3}")
+
+# Ejemplo de uso
+archivo_wav = "archivo.wav"
+archivo_mp3 = "archivo.mp3"
+convertir_wav_a_mp3(archivo_wav, archivo_mp3)
