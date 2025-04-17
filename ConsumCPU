@@ -1,0 +1,14 @@
+import threading
+
+def consumir_cpu():
+    while True:
+        pass  # Bucle infinito que consume CPU
+
+# Número de hilos que quieres crear (por ejemplo, uno por núcleo)
+num_hilos = 4  # Ajusta según tu procesador
+
+hilos = []
+for _ in range(num_hilos):
+    hilo = threading.Thread(target=consumir_cpu)
+    hilo.start()
+    hilos.append(hilo)
