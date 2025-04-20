@@ -1,0 +1,66 @@
+import tkinter as tk
+from tkinter import messagebox
+
+# Productos disponibles
+productos = {
+    "Manzana": 0.5,
+    "Banana": 0.3,
+    "Pan": 1.5,
+    "Leche": 1.2
+}
+
+carrito = {}
+
+# Función para agregar al carrito
+def agregar_producto():
+    producto = producto_var.get()
+    cantidad = int(cantidad_var.get())
+    if producto in carrito:
+        carrito[producto] += cantidad
+    else:
+        carrito[producto] = cantidad
+    actualizar_carrito()
+
+# Actualiza la lista del carrito
+def actualizar_carrito():
+    carrito_text.delete("1.0", tk.END)
+    total = 0
+    for producto, cantidad in carrito.items():
+        precio = productos[producto] * cantidad
+        carrito_text.insert(tk.END, f"{producto} x{cantidad} - ${precio:.2f}\n")
+        total += precio
+    total_label.config(text=f"Total: ${total:.2f}")
+
+# Función para finalizar venta
+def finalizar_venta():
+    if not carrito:
+        messagebox.showwarning("Carrito vacío", "Agrega productos antes de finalizar.")
+        return
+    messagebox.showinfo("Venta realizada", "Gracias por su compra.")
+    carrito.clear()
+    actualizar_carrito()
+
+# Interfaz
+root = tk.Tk()
+root.title("Sistema de Ventas")
+
+tk.Label(root, text="Producto:").grid(row=0, column=0)
+producto_var = tk.StringVar()
+producto_menu = tk.OptionMenu(root, producto_var, *productos.keys())
+producto_menu.grid(row=0, column=1)
+
+tk.Label(root, text="Cantidad:").grid(row=1, column=0)
+cantidad_var = tk.StringVar(value="1")
+tk.Entry(root, textvariable=cantidad_var).grid(row=1, column=1)
+
+tk.Button(root, text="Agregar al Carrito", command=agregar_producto).grid(row=2, column=0, columnspan=2, pady=5)
+
+carrito_text = tk.Text(root, height=10, width=40)
+carrito_text.grid(row=3, column=0, columnspan=2)
+
+total_label = tk.Label(root, text="Total: $0.00")
+total_label.grid(row=4, column=0, columnspan=2)
+
+tk.Button(root, text="Finalizar Venta", command=finalizar_venta).grid(row=5, column=0, columnspan=2, pady=10)
+
+root.mainloop()
