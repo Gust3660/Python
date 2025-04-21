@@ -1,0 +1,25 @@
+from vpython imp
+from vpython import sphere, vector, color, rate
+
+# Crear el Sol
+sun = sphere(pos=vector(0,0,0), radius=2, color=color.yellow, emissive=True)
+
+# Crear la Tierra
+earth = sphere(pos=vector(10,0,0), radius=1, color=color.blue, make_trail=True)
+
+# Crear Marte
+mars = sphere(pos=vector(15,0,0), radius=0.8, color=color.red, make_trail=True)
+
+# Velocidades angulares (radianes por paso de tiempo)
+earth_angle = 0
+mars_angle = 0
+
+while True:
+    rate(60)  # 60 frames por segundo
+
+    # Movimiento orbital (circular simple)
+    earth_angle += 0.01
+    mars_angle += 0.008
+
+    earth.pos = vector(10 * cos(earth_angle), 0, 10 * sin(earth_angle))
+    mars.pos = vector(15 * cos(mars_angle), 0, 15 * sin(mars_angle))
