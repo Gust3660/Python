@@ -1,0 +1,8 @@
+# Usando corchetes
+arreglo_vacio = []
+
+# Usando list()
+arreglo_vacio2 = list()
+
+print(arreglo_vacio)  # Salida: []
+print(arreglo_vacio2) # Salida: []
