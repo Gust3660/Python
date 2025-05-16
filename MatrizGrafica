@@ -1,0 +1,25 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Solicitar la cantidad de datos a ingresar
+n = int(input("Ingrese la cantidad de datos a ingresar: "))
+
+# Crear una matriz vacía para almacenar los datos
+datos = np.zeros((n, 2))
+
+# Ingresar los datos
+print("Ingrese los datos en forma de pares (x, y):")
+for i in range(n):
+    x, y = map(float, input(f"Datos {i+1}: ").split())
+    datos[i] = [x, y]
+
+# Graficar los datos
+plt.figure(figsize=(8, 6))
+plt.scatter(datos[:, 0], datos[:, 1], color='blue', label="Datos ingresados")
+plt.plot(datos[:, 0], datos[:, 1], linestyle='-', color='red', alpha=0.6, label="Conexión de datos")
+plt.xlabel("Eje X")
+plt.ylabel("Eje Y")
+plt.title("Gráfico de Datos Ingresados")
+plt.legend()
+plt.grid(True)
+plt.show()
