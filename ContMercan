@@ -1,0 +1,30 @@
+class Inventario:
+    def __init__(self):
+        self.productos = {}
+
+    def agregar_producto(self, nombre, cantidad):
+        if nombre in self.productos:
+            self.productos[nombre] += cantidad
+        else:
+            self.productos[nombre] = cantidad
+
+    def eliminar_producto(self, nombre, cantidad):
+        if nombre in self.productos:
+            self.productos[nombre] -= cantidad
+            if self.productos[nombre] <= 0:
+                del self.productos[nombre]
+        else:
+            print("El producto no existe en el inventario.")
+
+    def mostrar_inventario(self):
+        print("Inventario actual:")
+        for producto, cantidad in self.productos.items():
+            print(f"{producto}: {cantidad}")
+
+# Ejemplo de uso
+inventario = Inventario()
+inventario.agregar_producto("Manzanas", 10)
+inventario.agregar_producto("Bananas", 5)
+inventario.mostrar_inventario()
+inventario.eliminar_producto("Manzanas", 3)
+inventario.mostrar_inventario()
