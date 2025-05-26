@@ -1,0 +1,27 @@
+import pptx
+import tkinter as tk
+from tkinter import scrolledtext
+
+def cargar_presentacion(ruta):
+    prs = pptx.Presentation(ruta)
+    contenido = []
+    for slide in prs.slides:
+        texto_slide = "\n".join([shape.text for shape in slide.shapes if hasattr(shape, "text")])
+        contenido.append(texto_slide)
+    return contenido
+
+def mostrar_presentacion(contenido):
+    ventana = tk.Tk()
+    ventana.title("Visor de PPTX")
+    
+    texto_area = scrolledtext.ScrolledText(ventana, width=80, height=20)
+    texto_area.pack()
+    
+    for slide_text in contenido:
+        texto_area.insert(tk.END, slide_text + "\n" + "-"*50 + "\n")
+
+    ventana.mainloop()
+
+ruta_pptx = "tu_presentacion.pptx"  # Reemplaza con la ruta de tu archivo
+contenido = cargar_presentacion(ruta_pptx)
+mostrar_presentacion(contenido)
